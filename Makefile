@@ -12,10 +12,10 @@ CPU = cortex-m4
 #  You will also need code for startup (following reset) and
 #  any code needed to get the PLL configured.
 OBJECTS    = $(PROJECT).o \
-          init.o \
-          crt0.o \
-		  clocks.o \
-		  led.o
+          startup_MK64F12.o \
+		  system_MK64F12.o \
+		  led.o \
+		  uart.o
 
 #  Select the target type.  This is typically arm-none-eabi.
 #  If your toolchain supports other targets, those target
@@ -35,7 +35,7 @@ INCDIRS = -ICMSIS/Include
 
 
 # Name and path to the linker script
-LSCRIPT = ld_ram.lds
+LSCRIPT = linker.lds
 
 
 OPTIMIZATION = 2
@@ -43,7 +43,7 @@ DEBUG = -g
 
 
 #  Compiler options
-GCFLAGS = -Wall -Werror -Wextra -std=gnu99 -fno-common -mcpu=$(CPU) -mthumb -O$(OPTIMIZATION) $(DEBUG)
+GCFLAGS = -Wall -Werror -Wextra -std=gnu99 -fno-common -mcpu=$(CPU) -mthumb -O$(OPTIMIZATION) $(DEBUG) -mfloat-abi=hard -mfpu=fpv4-sp-d16
 GCFLAGS += $(INCDIRS)
 
 # You can uncomment the following line to create an assembly output
@@ -63,9 +63,6 @@ ASFLAGS = -mcpu=$(CPU)
 
 #  Linker options
 LDFLAGS  = -nostdlib -nostartfiles -Map=$(PROJECT).map -T$(LSCRIPT)
-LDFLAGS += --cref
-LDFLAGS += $(LIBDIRS)
-LDFLAGS += $(LIBS)
 
 
 #  Tools paths

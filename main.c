@@ -1,10 +1,9 @@
 #include "led.h"
-#include "clocks.h"
 
 
 int main(){
-    clock_init();
     led_init();
     led_blink();
+    while(1);
     return 0;
 }
